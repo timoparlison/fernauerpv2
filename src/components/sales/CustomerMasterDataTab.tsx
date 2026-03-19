@@ -255,11 +255,11 @@ export function CustomerMasterDataTab({ customer, onUpdated }: CustomerMasterDat
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">Name</p>
-            <p className="text-sm">{customer.name}</p>
+            <p className="text-sm" data-testid="detail-name">{customer.name}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Typ</p>
-            <p className="text-sm">{customer.customer_type}</p>
+            <p className="text-sm" data-testid="detail-customer-type">{customer.customer_type}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Status</p>
@@ -269,59 +269,59 @@ export function CustomerMasterDataTab({ customer, onUpdated }: CustomerMasterDat
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Kundennummer</p>
-            <p className="text-sm">{customer.customer_number || '-'}</p>
+            <p className="text-sm" data-testid="detail-customer-number">{customer.customer_number || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Ansprechpartner</p>
-            <p className="text-sm">{customer.contact_person || '-'}</p>
+            <p className="text-sm" data-testid="detail-contact-person">{customer.contact_person || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">E-Mail</p>
-            <p className="text-sm">{customer.email || '-'}</p>
+            <p className="text-sm" data-testid="detail-email">{customer.email || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Telefon</p>
-            <p className="text-sm">{customer.phone || '-'}</p>
+            <p className="text-sm" data-testid="detail-phone">{customer.phone || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">USt-IdNr.</p>
-            <p className="text-sm">{customer.vat_id || '-'}</p>
+            <p className="text-sm" data-testid="detail-vat-id">{customer.vat_id || '-'}</p>
           </div>
         </div>
 
         <div>
           <p className="text-sm font-medium text-muted-foreground">Adresse</p>
-          <p className="text-sm whitespace-pre-line">{customer.address || '-'}</p>
+          <p className="text-sm whitespace-pre-line" data-testid="detail-address">{customer.address || '-'}</p>
         </div>
         <div>
           <p className="text-sm font-medium text-muted-foreground">Rechnungsadresse</p>
-          <p className="text-sm whitespace-pre-line">{customer.billing_address || '-'}</p>
+          <p className="text-sm whitespace-pre-line" data-testid="detail-billing-address">{customer.billing_address || '-'}</p>
         </div>
         <div>
           <p className="text-sm font-medium text-muted-foreground">Lieferadresse</p>
-          <p className="text-sm whitespace-pre-line">{customer.delivery_address || '-'}</p>
+          <p className="text-sm whitespace-pre-line" data-testid="detail-delivery-address">{customer.delivery_address || '-'}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">Zahlungsbedingungen</p>
-            <p className="text-sm">{customer.payment_terms || '-'}</p>
+            <p className="text-sm" data-testid="detail-payment-terms">{customer.payment_terms || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Lieferbedingungen</p>
-            <p className="text-sm">{customer.delivery_terms || '-'}</p>
+            <p className="text-sm" data-testid="detail-delivery-terms">{customer.delivery_terms || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Liefertage</p>
-            <p className="text-sm">{customer.delivery_days || '-'}</p>
+            <p className="text-sm" data-testid="detail-delivery-days">{customer.delivery_days || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Unsere Lieferantennr. beim Kunden</p>
-            <p className="text-sm">{customer.our_supplier_number_at_customer || '-'}</p>
+            <p className="text-sm" data-testid="detail-supplier-number-at-customer">{customer.our_supplier_number_at_customer || '-'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground">Standard-Rabatt</p>
-            <p className="text-sm">{customer.default_discount_percent != null ? `${customer.default_discount_percent}%` : '-'}</p>
+            <p className="text-sm" data-testid="detail-discount">{customer.default_discount_percent != null ? `${customer.default_discount_percent}%` : '-'}</p>
           </div>
         </div>
 
@@ -330,23 +330,23 @@ export function CustomerMasterDataTab({ customer, onUpdated }: CustomerMasterDat
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Kontoinhaber</p>
-              <p className="text-sm">{customer.account_holder || '-'}</p>
+              <p className="text-sm" data-testid="detail-account-holder">{customer.account_holder || '-'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">IBAN</p>
-              <p className="text-sm">{customer.iban || '-'}</p>
+              <p className="text-sm" data-testid="detail-iban">{customer.iban || '-'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">BIC</p>
-              <p className="text-sm">{customer.bic || '-'}</p>
+              <p className="text-sm" data-testid="detail-bic">{customer.bic || '-'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Zahlungsreferenz</p>
-              <p className="text-sm">{customer.payment_reference || '-'}</p>
+              <p className="text-sm" data-testid="detail-payment-reference">{customer.payment_reference || '-'}</p>
             </div>
             <div className="col-span-2">
               <p className="text-sm font-medium text-muted-foreground">Verwendungszweck</p>
-              <p className="text-sm">{customer.payment_purpose || '-'}</p>
+              <p className="text-sm" data-testid="detail-payment-purpose">{customer.payment_purpose || '-'}</p>
             </div>
           </div>
         </div>
@@ -356,22 +356,22 @@ export function CustomerMasterDataTab({ customer, onUpdated }: CustomerMasterDat
           <div className="grid grid-cols-3 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">E-Mail 1</p>
-              <p className="text-sm">{customer.invoice_email_1 || '-'}</p>
+              <p className="text-sm" data-testid="detail-invoice-email-1">{customer.invoice_email_1 || '-'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">E-Mail 2</p>
-              <p className="text-sm">{customer.invoice_email_2 || '-'}</p>
+              <p className="text-sm" data-testid="detail-invoice-email-2">{customer.invoice_email_2 || '-'}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">E-Mail 3</p>
-              <p className="text-sm">{customer.invoice_email_3 || '-'}</p>
+              <p className="text-sm" data-testid="detail-invoice-email-3">{customer.invoice_email_3 || '-'}</p>
             </div>
           </div>
         </div>
 
         <div>
           <p className="text-sm font-medium text-muted-foreground">Notizen</p>
-          <p className="text-sm whitespace-pre-line">{customer.notes || '-'}</p>
+          <p className="text-sm whitespace-pre-line" data-testid="detail-notes">{customer.notes || '-'}</p>
         </div>
       </CardContent>
     </Card>

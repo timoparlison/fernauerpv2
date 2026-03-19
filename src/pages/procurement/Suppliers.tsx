@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Download, FileUp } from 'lucide-react'
@@ -5,8 +6,12 @@ import { useSupplierManagement } from '@/hooks/procurement/useSupplierManagement
 import { SupplierTable } from '@/components/procurement/suppliers/SupplierTable'
 import { SupplierFormDialog } from '@/components/procurement/suppliers/SupplierFormDialog'
 import { SupplierDetailsDialog } from '@/components/procurement/suppliers/SupplierDetailsDialog'
+import { TablePagination } from '@/components/ui/table-pagination'
 
 export default function Suppliers() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+
   const {
     suppliers, isLoading, selectedSupplier,
     isAddDialogOpen, setIsAddDialogOpen,
@@ -23,6 +28,9 @@ export default function Suppliers() {
     toggleSupplierStatus,
     isCreating, isUpdating,
   } = useSupplierManagement()
+
+  const totalPages = Math.ceil(suppliers.length / pageSize)
+  const paginatedSuppliers = suppliers.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -89,12 +97,24 @@ export default function Suppliers() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
             </div>
           ) : (
-            <SupplierTable
-              suppliers={suppliers}
-              onViewDetails={openDetailDialog}
-              onEdit={openEditDialog}
-              onToggleStatus={toggleSupplierStatus}
-            />
+            <>
+              <SupplierTable
+                suppliers={paginatedSuppliers}
+                onViewDetails={openDetailDialog}
+                onEdit={openEditDialog}
+                onToggleStatus={toggleSupplierStatus}
+              />
+              {suppliers.length > 0 && (
+                <TablePagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={suppliers.length}
+                  pageSize={pageSize}
+                  onPageChange={setCurrentPage}
+                  onPageSizeChange={(size) => { setPageSize(size); setCurrentPage(1) }}
+                />
+              )}
+            </>
           )}
         </CardContent>
       </Card>

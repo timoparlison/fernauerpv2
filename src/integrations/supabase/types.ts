@@ -191,6 +191,7 @@ export interface Database {
           email: string | null
           phone: string | null
           address: string | null
+          billing_address: string | null
           delivery_address: string | null
           payment_terms: string | null
           delivery_terms: string | null
@@ -198,10 +199,12 @@ export interface Database {
           vat_id: string | null
           iban: string | null
           bic: string | null
+          bank_name: string | null
           account_holder: string | null
           payment_reference: string | null
           payment_purpose: string | null
           notes: string | null
+          average_lead_time_days: number | null
           active: boolean
           deleted_at: string | null
           created_at: string
@@ -216,6 +219,7 @@ export interface Database {
           email?: string | null
           phone?: string | null
           address?: string | null
+          billing_address?: string | null
           delivery_address?: string | null
           payment_terms?: string | null
           delivery_terms?: string | null
@@ -223,10 +227,12 @@ export interface Database {
           vat_id?: string | null
           iban?: string | null
           bic?: string | null
+          bank_name?: string | null
           account_holder?: string | null
           payment_reference?: string | null
           payment_purpose?: string | null
           notes?: string | null
+          average_lead_time_days?: number | null
           active?: boolean
           deleted_at?: string | null
           created_at?: string
@@ -241,6 +247,7 @@ export interface Database {
           email?: string | null
           phone?: string | null
           address?: string | null
+          billing_address?: string | null
           delivery_address?: string | null
           payment_terms?: string | null
           delivery_terms?: string | null
@@ -248,10 +255,12 @@ export interface Database {
           vat_id?: string | null
           iban?: string | null
           bic?: string | null
+          bank_name?: string | null
           account_holder?: string | null
           payment_reference?: string | null
           payment_purpose?: string | null
           notes?: string | null
+          average_lead_time_days?: number | null
           active?: boolean
           deleted_at?: string | null
           created_at?: string
@@ -398,6 +407,129 @@ export interface Database {
           birthday?: string | null
           availability?: string | null
           notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      articles: {
+        Relationships: []
+        Row: {
+          id: string
+          article_number: string
+          article_type: string
+          article_name: string
+          additional_description: string | null
+          unit: string
+          net_weight: number | null
+          material: string | null
+          country_of_origin: string | null
+          customs_tariff_number: string | null
+          drawing_number: string | null
+          drawing_revision: string | null
+          drawing_file_path: string | null
+          drawing_file_name: string | null
+          customer_qr_code_path: string | null
+          default_price: number | null
+          manufacturing_cost: number | null
+          price_breaks: Json | null
+          default_warranty_months: number | null
+          purchase_account: string | null
+          supplier_id: string | null
+          supplier_article_number: string | null
+          raw_material_id: string | null
+          raw_material_quantity: number | null
+          requires_calibration: boolean | null
+          requires_certificate: boolean | null
+          requires_expiry_tracking: boolean | null
+          requires_incoming_inspection: boolean | null
+          tracking_mode: string | null
+          vision_inspection_enabled: boolean | null
+          vision_inspection_criteria: Json | null
+          version: number
+          active: boolean
+          organization_id: string | null
+          deleted_at: string | null
+          deletion_reason: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          article_number: string
+          article_type: string
+          article_name: string
+          additional_description?: string | null
+          unit: string
+          net_weight?: number | null
+          material?: string | null
+          country_of_origin?: string | null
+          customs_tariff_number?: string | null
+          drawing_number?: string | null
+          drawing_revision?: string | null
+          drawing_file_path?: string | null
+          drawing_file_name?: string | null
+          customer_qr_code_path?: string | null
+          default_price?: number | null
+          manufacturing_cost?: number | null
+          price_breaks?: Json | null
+          default_warranty_months?: number | null
+          purchase_account?: string | null
+          supplier_id?: string | null
+          supplier_article_number?: string | null
+          raw_material_id?: string | null
+          raw_material_quantity?: number | null
+          requires_calibration?: boolean | null
+          requires_certificate?: boolean | null
+          requires_expiry_tracking?: boolean | null
+          requires_incoming_inspection?: boolean | null
+          tracking_mode?: string | null
+          vision_inspection_enabled?: boolean | null
+          vision_inspection_criteria?: Json | null
+          version?: number
+          active?: boolean
+          organization_id?: string | null
+          deleted_at?: string | null
+          deletion_reason?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          article_number?: string
+          article_type?: string
+          article_name?: string
+          additional_description?: string | null
+          unit?: string
+          net_weight?: number | null
+          material?: string | null
+          country_of_origin?: string | null
+          customs_tariff_number?: string | null
+          drawing_number?: string | null
+          drawing_revision?: string | null
+          drawing_file_path?: string | null
+          drawing_file_name?: string | null
+          customer_qr_code_path?: string | null
+          default_price?: number | null
+          manufacturing_cost?: number | null
+          price_breaks?: Json | null
+          default_warranty_months?: number | null
+          purchase_account?: string | null
+          supplier_id?: string | null
+          supplier_article_number?: string | null
+          raw_material_id?: string | null
+          raw_material_quantity?: number | null
+          requires_calibration?: boolean | null
+          requires_certificate?: boolean | null
+          requires_expiry_tracking?: boolean | null
+          requires_incoming_inspection?: boolean | null
+          tracking_mode?: string | null
+          vision_inspection_enabled?: boolean | null
+          vision_inspection_criteria?: Json | null
+          version?: number
+          active?: boolean
+          organization_id?: string | null
+          deleted_at?: string | null
+          deletion_reason?: string | null
           created_at?: string
           updated_at?: string
         }

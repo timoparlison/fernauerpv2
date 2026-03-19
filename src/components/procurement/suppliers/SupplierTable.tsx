@@ -37,13 +37,13 @@ export function SupplierTable({ suppliers, onViewDetails, onEdit, onToggleStatus
         {suppliers.map((supplier) => (
           <TableRow key={supplier.id} data-testid={`supplier-row-${supplier.id}`}>
             <TableCell className="font-medium" data-testid="supplier-name">{supplier.name}</TableCell>
-            <TableCell>
+            <TableCell data-testid="supplier-type">
               <Badge variant="outline">{getSupplierTypeLabel(supplier.supplier_type)}</Badge>
             </TableCell>
             <TableCell>{supplier.contact_person || '-'}</TableCell>
             <TableCell>{supplier.email || '-'}</TableCell>
             <TableCell>{supplier.phone || '-'}</TableCell>
-            <TableCell>
+            <TableCell data-testid="supplier-status">
               <Badge variant={supplier.active ? 'default' : 'secondary'}>
                 {supplier.active ? 'Aktiv' : 'Inaktiv'}
               </Badge>

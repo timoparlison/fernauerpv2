@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { Plus, Eye, Ban, CheckCircle, Download, FileUp, Search } from 'lucide-react'
+import { TablePagination } from '@/components/ui/table-pagination'
 import { CustomerMasterDataTab } from '@/components/sales/CustomerMasterDataTab'
 import { CustomerContactsTab } from '@/components/sales/CustomerContactsTab'
 import { getCustomerTypeLabel } from '@/components/sales/types'
@@ -38,6 +39,8 @@ export default function Customers() {
   const [addPaymentTerms, setAddPaymentTerms] = useState('')
   const [addDeliveryTerms, setAddDeliveryTerms] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
   const queryClient = useQueryClient()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -45,6 +48,9 @@ export default function Customers() {
     queryKey: ['customers', searchTerm],
     queryFn: () => fetchCustomers(searchTerm || undefined),
   })
+
+  const totalPages = Math.ceil(customers.length / pageSize)
+  const paginatedCustomers = customers.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   const createMutation = useMutation({
     mutationFn: createCustomer,
@@ -206,7 +212,7 @@ export default function Customers() {
                 className="pl-9"
                 placeholder="Name, Kundennummer oder E-Mail suchen..."
                 value={searchTerm}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSearchTerm(e.target.value); setCurrentPage(1) }}
                 data-testid="search-input"
               />
             </div>
@@ -398,7 +404,7 @@ export default function Customers() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customers.map((customer) => (
+              {paginatedCustomers.map((customer) => (
                 <TableRow key={customer.id} data-testid="customer-row">
                   <TableCell className="font-medium">{customer.name}</TableCell>
                   <TableCell>
@@ -441,6 +447,16 @@ export default function Customers() {
               ))}
             </TableBody>
           </Table>
+          {customers.length > 0 && (
+            <TablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={customers.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(size) => { setPageSize(size); setCurrentPage(1) }}
+            />
+          )}
         </CardContent>
       </Card>
 

@@ -42,13 +42,16 @@ export function SupplierMasterDataTab({ supplier }: SupplierMasterDataTabProps) 
       email: (formData.get('email') as string) || null,
       phone: (formData.get('phone') as string) || null,
       address: (formData.get('address') as string) || null,
+      billing_address: (formData.get('billing_address') as string) || null,
       delivery_address: (formData.get('delivery_address') as string) || null,
       payment_terms: paymentTerms || null,
       delivery_terms: deliveryTerms || null,
       customer_number_at_supplier: (formData.get('customer_number_at_supplier') as string) || null,
       vat_id: (formData.get('vat_id') as string) || null,
+      average_lead_time_days: formData.get('average_lead_time_days') ? parseInt(formData.get('average_lead_time_days') as string) : null,
       iban: (formData.get('iban') as string) || null,
       bic: (formData.get('bic') as string) || null,
+      bank_name: (formData.get('bank_name') as string) || null,
       account_holder: (formData.get('account_holder') as string) || null,
       payment_reference: (formData.get('payment_reference') as string) || null,
       payment_purpose: (formData.get('payment_purpose') as string) || null,
@@ -110,8 +113,12 @@ export function SupplierMasterDataTab({ supplier }: SupplierMasterDataTabProps) 
                 <Input id="master-phone" name="phone" defaultValue={supplier.phone || ''} />
               </div>
               <div className="col-span-2">
-                <Label htmlFor="master-address">Rechnungsadresse</Label>
+                <Label htmlFor="master-address">Adresse</Label>
                 <Textarea id="master-address" name="address" defaultValue={supplier.address || ''} />
+              </div>
+              <div className="col-span-2">
+                <Label htmlFor="master-billing_address">Rechnungsadresse</Label>
+                <Textarea id="master-billing_address" name="billing_address" defaultValue={supplier.billing_address || ''} />
               </div>
               <div className="col-span-2">
                 <Label htmlFor="master-delivery_address">Lieferadresse</Label>
@@ -133,6 +140,10 @@ export function SupplierMasterDataTab({ supplier }: SupplierMasterDataTabProps) 
                 <Label htmlFor="master-vat_id">USt-IdNr.</Label>
                 <Input id="master-vat_id" name="vat_id" defaultValue={supplier.vat_id || ''} />
               </div>
+              <div>
+                <Label htmlFor="master-average_lead_time_days">Ø Lieferzeit (Tage)</Label>
+                <Input id="master-average_lead_time_days" name="average_lead_time_days" type="number" step="1" defaultValue={supplier.average_lead_time_days ?? ''} />
+              </div>
               <div className="col-span-2"><h4 className="font-semibold mt-4 mb-2">Bankdaten</h4></div>
               <div>
                 <Label htmlFor="master-iban">IBAN</Label>
@@ -141,6 +152,10 @@ export function SupplierMasterDataTab({ supplier }: SupplierMasterDataTabProps) 
               <div>
                 <Label htmlFor="master-bic">BIC</Label>
                 <Input id="master-bic" name="bic" defaultValue={supplier.bic || ''} />
+              </div>
+              <div>
+                <Label htmlFor="master-bank_name">Bankname</Label>
+                <Input id="master-bank_name" name="bank_name" defaultValue={supplier.bank_name || ''} />
               </div>
               <div className="col-span-2">
                 <Label htmlFor="master-account_holder">Kontoinhaber</Label>
@@ -191,18 +206,21 @@ export function SupplierMasterDataTab({ supplier }: SupplierMasterDataTabProps) 
           <div><Label>E-Mail</Label><p className="text-sm mt-1" data-testid="detail-email">{supplier.email || '-'}</p></div>
           <div><Label>Telefon</Label><p className="text-sm mt-1" data-testid="detail-phone">{supplier.phone || '-'}</p></div>
           <div><Label>Status</Label><div className="mt-1"><Badge variant={supplier.active ? 'default' : 'destructive'}>{supplier.active ? 'Aktiv' : 'Gesperrt'}</Badge></div></div>
-          <div className="col-span-2"><Label>Rechnungsadresse</Label><p className="text-sm mt-1 whitespace-pre-line" data-testid="detail-address">{supplier.address || '-'}</p></div>
+          <div className="col-span-2"><Label>Adresse</Label><p className="text-sm mt-1 whitespace-pre-line" data-testid="detail-address">{supplier.address || '-'}</p></div>
+          <div className="col-span-2"><Label>Rechnungsadresse</Label><p className="text-sm mt-1 whitespace-pre-line" data-testid="detail-billing-address">{supplier.billing_address || '-'}</p></div>
           <div className="col-span-2"><Label>Lieferadresse</Label><p className="text-sm mt-1 whitespace-pre-line" data-testid="detail-delivery-address">{supplier.delivery_address || '-'}</p></div>
           <div><Label>Zahlungsbedingungen</Label><p className="text-sm mt-1" data-testid="detail-payment-terms">{supplier.payment_terms || '-'}</p></div>
           <div><Label>Lieferbedingungen</Label><p className="text-sm mt-1" data-testid="detail-delivery-terms">{supplier.delivery_terms || '-'}</p></div>
           <div><Label>Unsere Kundennummer</Label><p className="text-sm mt-1" data-testid="detail-customer-number">{supplier.customer_number_at_supplier || '-'}</p></div>
           <div><Label>USt-IdNr.</Label><p className="text-sm mt-1" data-testid="detail-vat-id">{supplier.vat_id || '-'}</p></div>
+          <div><Label>Ø Lieferzeit (Tage)</Label><p className="text-sm mt-1" data-testid="detail-lead-time">{supplier.average_lead_time_days != null ? `${supplier.average_lead_time_days} Tage` : '-'}</p></div>
         </div>
         <div className="mt-4">
           <h4 className="font-semibold mb-3">Bankdaten</h4>
           <div className="grid grid-cols-2 gap-4">
             <div><Label>IBAN</Label><p className="text-sm mt-1" data-testid="detail-iban">{supplier.iban || '-'}</p></div>
             <div><Label>BIC</Label><p className="text-sm mt-1" data-testid="detail-bic">{supplier.bic || '-'}</p></div>
+            <div><Label>Bankname</Label><p className="text-sm mt-1" data-testid="detail-bank-name">{supplier.bank_name || '-'}</p></div>
             <div className="col-span-2"><Label>Kontoinhaber</Label><p className="text-sm mt-1" data-testid="detail-account-holder">{supplier.account_holder || '-'}</p></div>
             <div className="col-span-2"><Label>Feste Referenznummer</Label><p className="text-sm mt-1">{supplier.payment_reference || '-'}</p></div>
             <div className="col-span-2"><Label>Verwendungszweck</Label><p className="text-sm mt-1">{supplier.payment_purpose || '-'}</p></div>

@@ -36,12 +36,20 @@ async function fillCustomerForm(page: Page, data: {
   email?: string
   phone?: string
   vat_id?: string
+  our_supplier_number_at_customer?: string
+  default_discount_percent?: string
+  address?: string
+  billing_address?: string
+  delivery_address?: string
   payment_terms?: string
   delivery_terms?: string
-  notes?: string
+  delivery_days?: string
+  account_holder?: string
   iban?: string
   bic?: string
-  account_holder?: string
+  payment_reference?: string
+  payment_purpose?: string
+  notes?: string
 }) {
   if (data.name !== undefined) await page.fill('[data-testid="input-name"]', data.name)
   if (data.type) await selectCustomerType(page, data.type)
@@ -49,12 +57,20 @@ async function fillCustomerForm(page: Page, data: {
   if (data.email) await page.fill('[data-testid="input-email"]', data.email)
   if (data.phone) await page.fill('[data-testid="input-phone"]', data.phone)
   if (data.vat_id) await page.fill('[data-testid="input-vat-id"]', data.vat_id)
+  if (data.our_supplier_number_at_customer) await page.fill('[data-testid="input-supplier-number-at-customer"]', data.our_supplier_number_at_customer)
+  if (data.default_discount_percent) await page.fill('[data-testid="input-discount"]', data.default_discount_percent)
+  if (data.address) await page.fill('[data-testid="input-address"]', data.address)
+  if (data.billing_address) await page.fill('[data-testid="input-billing-address"]', data.billing_address)
+  if (data.delivery_address) await page.fill('[data-testid="input-delivery-address"]', data.delivery_address)
   if (data.payment_terms) await page.fill('[data-testid="input-payment-terms"]', data.payment_terms)
   if (data.delivery_terms) await page.fill('[data-testid="input-delivery-terms"]', data.delivery_terms)
-  if (data.notes) await page.fill('[data-testid="input-notes"]', data.notes)
+  if (data.delivery_days) await page.fill('[data-testid="input-delivery-days"]', data.delivery_days)
+  if (data.account_holder) await page.fill('[data-testid="input-account-holder"]', data.account_holder)
   if (data.iban) await page.fill('[data-testid="input-iban"]', data.iban)
   if (data.bic) await page.fill('[data-testid="input-bic"]', data.bic)
-  if (data.account_holder) await page.fill('[data-testid="input-account-holder"]', data.account_holder)
+  if (data.payment_reference) await page.fill('[data-testid="input-payment-reference"]', data.payment_reference)
+  if (data.payment_purpose) await page.fill('[data-testid="input-payment-purpose"]', data.payment_purpose)
+  if (data.notes) await page.fill('[data-testid="input-notes"]', data.notes)
 }
 
 test.describe('Kunden', () => {
@@ -102,29 +118,59 @@ test.describe('Kunden', () => {
       email: `e2e-${ts}@test.de`,
       phone: '+49 30 12345678',
       vat_id: 'DE123456789',
+      our_supplier_number_at_customer: `LNR-${ts}`,
+      default_discount_percent: '5.5',
+      address: 'Hauptstraße 1\n10115 Berlin',
+      billing_address: 'Rechnungsstraße 5\n10117 Berlin',
+      delivery_address: 'Lagerstraße 10\n10119 Berlin',
       payment_terms: '30 Tage netto',
       delivery_terms: 'DAP Werk',
-      notes: `E2E-Test Notiz ${ts}`,
+      delivery_days: 'Mo, Mi, Fr',
+      account_holder: `Kunde ${ts} GmbH`,
       iban: 'DE89370400440532013000',
       bic: 'COBADEFFXXX',
-      account_holder: `Kunde ${ts} GmbH`,
+      payment_reference: `REF-${ts}`,
+      payment_purpose: `Verwendung-${ts}`,
+      notes: `E2E-Test Notiz ${ts}`,
     })
     await page.click('[data-testid="submit-customer"]')
 
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
     await expect(page.locator('[data-testid="dialog-title"]')).not.toBeVisible()
 
-    // Details öffnen
+    // Details öffnen und alle Felder prüfen
     const row = page.locator('[data-testid="customer-row"]').filter({ hasText: name })
     await row.locator('[data-testid="view-customer-btn"]').click()
     await expect(page.locator('[data-testid="detail-dialog-title"]')).toContainText(name)
 
-    await expect(page.getByText('Max Mustermann').first()).toBeVisible()
-    await expect(page.getByText(`e2e-${ts}@test.de`).first()).toBeVisible()
-    await expect(page.getByText('+49 30 12345678').first()).toBeVisible()
-    await expect(page.getByText('30 Tage netto').first()).toBeVisible()
-    await expect(page.getByText('DAP Werk').first()).toBeVisible()
-    await expect(page.getByText(`E2E-Test Notiz ${ts}`).first()).toBeVisible()
+    // Grunddaten
+    await expect(page.locator('[data-testid="detail-name"]')).toContainText(name)
+    await expect(page.locator('[data-testid="detail-contact-person"]')).toContainText('Max Mustermann')
+    await expect(page.locator('[data-testid="detail-email"]')).toContainText(`e2e-${ts}@test.de`)
+    await expect(page.locator('[data-testid="detail-phone"]')).toContainText('+49 30 12345678')
+    await expect(page.locator('[data-testid="detail-vat-id"]')).toContainText('DE123456789')
+    await expect(page.locator('[data-testid="detail-supplier-number-at-customer"]')).toContainText(`LNR-${ts}`)
+    await expect(page.locator('[data-testid="detail-discount"]')).toContainText('5.5%')
+
+    // Adressen
+    await expect(page.locator('[data-testid="detail-address"]')).toContainText('Hauptstraße 1')
+    await expect(page.locator('[data-testid="detail-billing-address"]')).toContainText('Rechnungsstraße 5')
+    await expect(page.locator('[data-testid="detail-delivery-address"]')).toContainText('Lagerstraße 10')
+
+    // Konditionen
+    await expect(page.locator('[data-testid="detail-payment-terms"]')).toContainText('30 Tage netto')
+    await expect(page.locator('[data-testid="detail-delivery-terms"]')).toContainText('DAP Werk')
+    await expect(page.locator('[data-testid="detail-delivery-days"]')).toContainText('Mo, Mi, Fr')
+
+    // Bankdaten
+    await expect(page.locator('[data-testid="detail-account-holder"]')).toContainText(`Kunde ${ts} GmbH`)
+    await expect(page.locator('[data-testid="detail-iban"]')).toContainText('DE89370400440532013000')
+    await expect(page.locator('[data-testid="detail-bic"]')).toContainText('COBADEFFXXX')
+    await expect(page.locator('[data-testid="detail-payment-reference"]')).toContainText(`REF-${ts}`)
+    await expect(page.locator('[data-testid="detail-payment-purpose"]')).toContainText(`Verwendung-${ts}`)
+
+    // Notizen
+    await expect(page.locator('[data-testid="detail-notes"]')).toContainText(`E2E-Test Notiz ${ts}`)
   })
 
   // ---------- Anlegen: Alle Kundentypen ------------------------
@@ -214,7 +260,7 @@ test.describe('Kunden', () => {
 
   // ---------- Bearbeiten + Wiederauslesen ----------------------
 
-  test('Kunden bearbeiten und Daten werden korrekt gespeichert', async ({ page }) => {
+  test('Kunden bearbeiten und alle Daten werden korrekt gespeichert', async ({ page }) => {
     const ts = timestamp()
     const originalName = `E2E-Edit-Orig ${ts}`
     const updatedName = `E2E-Edit-Updated ${ts}`
@@ -233,16 +279,27 @@ test.describe('Kunden', () => {
 
     await page.fill('[data-testid="edit-input-name"]', updatedName)
     await page.fill('[data-testid="edit-input-contact-person"]', 'Neue Person')
+    await page.fill('[data-testid="edit-input-phone"]', '+49 89 9999999')
     await page.fill('[data-testid="edit-input-iban"]', 'DE89370400440532013000')
     await page.fill('[data-testid="edit-input-bic"]', 'COBADEFFXXX')
     await page.fill('[data-testid="edit-input-account-holder"]', 'Test GmbH')
     await page.fill('[data-testid="edit-input-invoice-email-1"]', `rechnung.${ts}@test.de`)
+    await page.fill('[data-testid="edit-input-invoice-email-2"]', `buchhaltung.${ts}@test.de`)
+    await page.fill('[data-testid="edit-input-invoice-email-3"]', `kopie.${ts}@test.de`)
     await page.click('[data-testid="edit-submit-customer"]')
 
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'aktualisiert' })).toBeVisible({ timeout: 10000 })
-    await expect(page.getByText(updatedName).first()).toBeVisible()
-    await expect(page.getByText('Neue Person').first()).toBeVisible()
-    await expect(page.getByText('COBADEFFXXX').first()).toBeVisible()
+
+    // Alle bearbeiteten Felder prüfen
+    await expect(page.locator('[data-testid="detail-name"]')).toContainText(updatedName)
+    await expect(page.locator('[data-testid="detail-contact-person"]')).toContainText('Neue Person')
+    await expect(page.locator('[data-testid="detail-phone"]')).toContainText('+49 89 9999999')
+    await expect(page.locator('[data-testid="detail-iban"]')).toContainText('DE89370400440532013000')
+    await expect(page.locator('[data-testid="detail-bic"]')).toContainText('COBADEFFXXX')
+    await expect(page.locator('[data-testid="detail-account-holder"]')).toContainText('Test GmbH')
+    await expect(page.locator('[data-testid="detail-invoice-email-1"]')).toContainText(`rechnung.${ts}@test.de`)
+    await expect(page.locator('[data-testid="detail-invoice-email-2"]')).toContainText(`buchhaltung.${ts}@test.de`)
+    await expect(page.locator('[data-testid="detail-invoice-email-3"]')).toContainText(`kopie.${ts}@test.de`)
   })
 
   // ---------- Status umschalten --------------------------------

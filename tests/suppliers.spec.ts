@@ -35,11 +35,13 @@ async function fillSupplierForm(page: Page, data: {
   email?: string
   phone?: string
   address?: string
+  billing_address?: string
   delivery_address?: string
   customer_number?: string
   vat_id?: string
   payment_terms?: string
   delivery_terms?: string
+  average_lead_time_days?: string
   notes?: string
 }) {
   if (data.name !== undefined) {
@@ -63,6 +65,9 @@ async function fillSupplierForm(page: Page, data: {
   if (data.address) {
     await page.fill('[data-testid="input-address"]', data.address)
   }
+  if (data.billing_address) {
+    await page.fill('[data-testid="input-billing-address"]', data.billing_address)
+  }
   if (data.delivery_address) {
     await page.fill('[data-testid="input-delivery-address"]', data.delivery_address)
   }
@@ -77,6 +82,9 @@ async function fillSupplierForm(page: Page, data: {
   }
   if (data.delivery_terms) {
     await page.fill('[data-testid="input-delivery-terms"]', data.delivery_terms)
+  }
+  if (data.average_lead_time_days) {
+    await page.fill('[data-testid="input-lead-time"]', data.average_lead_time_days)
   }
   if (data.notes) {
     await page.fill('[data-testid="input-notes"]', data.notes)
@@ -107,7 +115,7 @@ test.describe('Lieferanten', () => {
   // ---------- Seite lädt ----------------------------------------
 
   test('Lieferanten-Seite lädt korrekt', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Lieferantenstamm')
+    await expect(page.getByRole('heading', { name: 'Lieferantenstamm' })).toBeVisible()
     await expect(page.locator('[data-testid="open-supplier-dialog"]')).toBeVisible()
     await expect(page.locator('[data-testid="btn-export"]')).toBeVisible()
   })
@@ -141,12 +149,14 @@ test.describe('Lieferanten', () => {
       contact_person: 'Max Mustermann',
       email: `e2e-${ts}@test.de`,
       phone: '+49 30 12345678',
-      address: 'Musterstraße 1\n12345 Berlin',
+      address: 'Hauptstraße 1\n10115 Berlin',
+      billing_address: 'Rechnungsstraße 5\n10117 Berlin',
       delivery_address: 'Lagerstraße 5\n10115 Berlin',
       customer_number: `CUST-${ts}`,
       vat_id: 'DE123456789',
       payment_terms: '30 Tage netto',
       delivery_terms: 'DAP Werk',
+      average_lead_time_days: '14',
       notes: `E2E-Test Notiz ${ts}`,
     }
 
@@ -164,12 +174,14 @@ test.describe('Lieferanten', () => {
     await expect(page.locator('[data-testid="detail-contact-person"]')).toContainText(supplierData.contact_person)
     await expect(page.locator('[data-testid="detail-email"]')).toContainText(supplierData.email)
     await expect(page.locator('[data-testid="detail-phone"]')).toContainText(supplierData.phone)
-    await expect(page.locator('[data-testid="detail-address"]')).toContainText('Musterstraße 1')
+    await expect(page.locator('[data-testid="detail-address"]')).toContainText('Hauptstraße 1')
+    await expect(page.locator('[data-testid="detail-billing-address"]')).toContainText('Rechnungsstraße 5')
     await expect(page.locator('[data-testid="detail-delivery-address"]')).toContainText('Lagerstraße 5')
     await expect(page.locator('[data-testid="detail-customer-number"]')).toContainText(supplierData.customer_number)
     await expect(page.locator('[data-testid="detail-vat-id"]')).toContainText(supplierData.vat_id)
     await expect(page.locator('[data-testid="detail-payment-terms"]')).toContainText(supplierData.payment_terms)
     await expect(page.locator('[data-testid="detail-delivery-terms"]')).toContainText(supplierData.delivery_terms)
+    await expect(page.locator('[data-testid="detail-lead-time"]')).toContainText('14 Tage')
     await expect(page.locator('[data-testid="detail-notes"]')).toContainText(supplierData.notes)
   })
 
@@ -184,7 +196,7 @@ test.describe('Lieferanten', () => {
 
     // Badge zeigt "Dienstleistung"
     const row = page.locator('tr').filter({ hasText: name })
-    await expect(row.locator('.badge, [class*="badge"]').filter({ hasText: 'Dienstleistung' })).toBeVisible()
+    await expect(row.locator('[data-testid="supplier-type"]')).toContainText('Dienstleistung')
   })
 
   // ---------- Validierung: Leerer Name --------------------------
@@ -234,7 +246,7 @@ test.describe('Lieferanten', () => {
 
   // ---------- Bearbeiten + Wiederauslesen -----------------------
 
-  test('Lieferant bearbeiten und Daten werden korrekt gespeichert und wiederausgelesen', async ({ page }) => {
+  test('Lieferant bearbeiten und alle Daten werden korrekt gespeichert und wiederausgelesen', async ({ page }) => {
     const ts = timestamp()
     const originalName = `E2E-Edit-Orig ${ts}`
     const updatedName = `E2E-Edit-Updated ${ts}`
@@ -254,6 +266,7 @@ test.describe('Lieferanten', () => {
     await page.fill('[data-testid="input-phone"]', '+49 89 9999999')
     await page.fill('[data-testid="input-iban"]', 'DE89370400440532013000')
     await page.fill('[data-testid="input-bic"]', 'COBADEFFXXX')
+    await page.fill('[data-testid="input-bank-name"]', 'Commerzbank')
     await page.fill('[data-testid="input-account-holder"]', 'Test GmbH')
     await page.click('[data-testid="submit-supplier"]')
 
@@ -266,6 +279,7 @@ test.describe('Lieferanten', () => {
     await expect(page.locator('[data-testid="detail-phone"]')).toContainText('+49 89 9999999')
     await expect(page.locator('[data-testid="detail-iban"]')).toContainText('DE89370400440532013000')
     await expect(page.locator('[data-testid="detail-bic"]')).toContainText('COBADEFFXXX')
+    await expect(page.locator('[data-testid="detail-bank-name"]')).toContainText('Commerzbank')
     await expect(page.locator('[data-testid="detail-account-holder"]')).toContainText('Test GmbH')
   })
 
@@ -284,12 +298,12 @@ test.describe('Lieferanten', () => {
     // Sperren
     await row.locator('[data-testid="btn-toggle-status"]').click()
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'gesperrt' })).toBeVisible({ timeout: 5000 })
-    await expect(row.locator('.badge, [class*="badge"]').filter({ hasText: 'Inaktiv' })).toBeVisible()
+    await expect(row.locator('[data-testid="supplier-status"]')).toContainText('Inaktiv')
 
     // Entsperren
     await row.locator('[data-testid="btn-toggle-status"]').click()
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'entsperrt' })).toBeVisible({ timeout: 5000 })
-    await expect(row.locator('.badge, [class*="badge"]').filter({ hasText: 'Aktiv' })).toBeVisible()
+    await expect(row.locator('[data-testid="supplier-status"]')).toContainText('Aktiv')
   })
 
   // ---------- Logische Validierungen ---------------------------
@@ -312,7 +326,7 @@ test.describe('Lieferanten', () => {
       const row = page.locator('tr').filter({ hasText: name })
       await expect(row).toBeVisible()
       // Badge zeigt korrektes Label
-      await expect(row.getByText(label)).toBeVisible()
+      await expect(row.locator('[data-testid="supplier-type"]')).toContainText(label)
     }
   })
 
@@ -324,7 +338,7 @@ test.describe('Lieferanten', () => {
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
 
     const row = page.locator('tr').filter({ hasText: name })
-    await expect(row.getByText('Aktiv')).toBeVisible()
+    await expect(row.locator('[data-testid="supplier-status"]')).toContainText('Aktiv')
   })
 
   test('Logisch: Reload behält Lieferanten-Daten (Persistenz)', async ({ page }) => {

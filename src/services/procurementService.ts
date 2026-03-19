@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client'
 import type { Supplier, SupplierFormData } from '@/components/procurement/suppliers/types'
 
 const SUPPLIER_FIELDS =
-  'id, supplier_number, name, supplier_type, contact_person, email, phone, address, delivery_address, payment_terms, delivery_terms, customer_number_at_supplier, vat_id, iban, bic, account_holder, payment_reference, payment_purpose, notes, active, created_at, updated_at'
+  'id, supplier_number, name, supplier_type, contact_person, email, phone, address, billing_address, delivery_address, payment_terms, delivery_terms, customer_number_at_supplier, vat_id, iban, bic, bank_name, account_holder, payment_reference, payment_purpose, notes, average_lead_time_days, active, created_at, updated_at'
 
 const db = supabase as any
 
