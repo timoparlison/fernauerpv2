@@ -311,7 +311,6 @@ export function AppSidebar({ onClose }: { onClose?: () => void }) {
         <ModuleSection title="Zusatzmodule" groups={additionalModules} />
 
         {/* KI Module */}
-        <ModuleSection title="KI Module" groups={aiModules} />
       </div>
 
       {/* Footer / Logout */}

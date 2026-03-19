@@ -1,4 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
+import * as dotenv from 'dotenv'
+import * as path from 'path'
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env.test') })
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:5173'
 
