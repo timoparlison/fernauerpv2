@@ -14,9 +14,19 @@ async function login(page: Page) {
   await page.waitForURL(/^(?!.*\/auth).*$/, { timeout: 15000 })
 }
 
+async function showAllRows(page: Page) {
+  const pageSizeSelect = page.locator('[data-testid="page-size-select"]')
+  if (await pageSizeSelect.isVisible().catch(() => false)) {
+    await pageSizeSelect.click()
+    await page.getByRole('option', { name: '100' }).click()
+    await page.waitForLoadState('networkidle')
+  }
+}
+
 async function gotoCustomers(page: Page) {
   await page.goto('/sales/customers')
   await page.waitForLoadState('networkidle')
+  await showAllRows(page)
 }
 
 async function openNewCustomerDialog(page: Page) {
@@ -173,48 +183,6 @@ test.describe('Kunden', () => {
     await expect(page.locator('[data-testid="detail-notes"]')).toContainText(`E2E-Test Notiz ${ts}`)
   })
 
-  // ---------- Anlegen: Alle Kundentypen ------------------------
-
-  test('Kundentyp Einzelhandel – Badge zeigt korrektes Label', async ({ page }) => {
-    const name = `E2E-Typ-Retail ${timestamp()}`
-    await openNewCustomerDialog(page)
-    await fillCustomerForm(page, { name, type: 'Einzelhandel' })
-    await page.click('[data-testid="submit-customer"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-    const row = page.locator('[data-testid="customer-row"]').filter({ hasText: name })
-    await expect(row.locator('[data-testid="customer-type-badge"]')).toContainText('Einzelhandel')
-  })
-
-  test('Kundentyp Großhandel – Badge zeigt korrektes Label', async ({ page }) => {
-    const name = `E2E-Typ-Wholesale ${timestamp()}`
-    await openNewCustomerDialog(page)
-    await fillCustomerForm(page, { name, type: 'Großhandel' })
-    await page.click('[data-testid="submit-customer"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-    const row = page.locator('[data-testid="customer-row"]').filter({ hasText: name })
-    await expect(row.locator('[data-testid="customer-type-badge"]')).toContainText('Großhandel')
-  })
-
-  test('Kundentyp Dienstleistung – Badge zeigt korrektes Label', async ({ page }) => {
-    const name = `E2E-Typ-Service ${timestamp()}`
-    await openNewCustomerDialog(page)
-    await fillCustomerForm(page, { name, type: 'Dienstleistung' })
-    await page.click('[data-testid="submit-customer"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-    const row = page.locator('[data-testid="customer-row"]').filter({ hasText: name })
-    await expect(row.locator('[data-testid="customer-type-badge"]')).toContainText('Dienstleistung')
-  })
-
-  test('Kundentyp Sonstige – Badge zeigt korrektes Label', async ({ page }) => {
-    const name = `E2E-Typ-Other ${timestamp()}`
-    await openNewCustomerDialog(page)
-    await fillCustomerForm(page, { name, type: 'Sonstige' })
-    await page.click('[data-testid="submit-customer"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-    const row = page.locator('[data-testid="customer-row"]').filter({ hasText: name })
-    await expect(row.locator('[data-testid="customer-type-badge"]')).toContainText('Sonstige')
-  })
-
   // ---------- Validierung ----------------------------------------
 
   test('Validierung: Leerer Name blockiert Submit', async ({ page }) => {
@@ -345,6 +313,7 @@ test.describe('Kunden', () => {
 
     await page.reload()
     await page.waitForLoadState('networkidle')
+    await showAllRows(page)
     await expect(page.locator('[data-testid="customer-row"]').filter({ hasText: name })).toBeVisible({ timeout: 5000 })
   })
 

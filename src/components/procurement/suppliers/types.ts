@@ -7,7 +7,6 @@ export interface Supplier {
   email?: string | null
   phone?: string | null
   address?: string | null
-  billing_address?: string | null
   delivery_address?: string | null
   payment_terms?: string | null
   delivery_terms?: string | null
@@ -15,12 +14,10 @@ export interface Supplier {
   vat_id?: string | null
   iban?: string | null
   bic?: string | null
-  bank_name?: string | null
   account_holder?: string | null
   payment_reference?: string | null
   payment_purpose?: string | null
   notes?: string | null
-  average_lead_time_days?: number | null
   active: boolean
   created_at?: string
   updated_at?: string
@@ -33,7 +30,6 @@ export interface SupplierFormData {
   email?: string | null
   phone?: string | null
   address?: string | null
-  billing_address?: string | null
   delivery_address?: string | null
   payment_terms?: string | null
   delivery_terms?: string | null
@@ -41,12 +37,10 @@ export interface SupplierFormData {
   vat_id?: string | null
   iban?: string | null
   bic?: string | null
-  bank_name?: string | null
   account_holder?: string | null
   payment_reference?: string | null
   payment_purpose?: string | null
   notes?: string | null
-  average_lead_time_days?: number | null
   active?: boolean
 }
 

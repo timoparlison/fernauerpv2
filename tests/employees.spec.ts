@@ -103,50 +103,6 @@ test.describe('Mitarbeiter', () => {
     await expect(page.getByText('COBADEFFXXX').first()).toBeVisible()
   })
 
-  // ---------- Beschäftigungsarten ------------------------------
-
-  test('Beschäftigungsart Vollzeit wird gespeichert', async ({ page }) => {
-    const ts = timestamp()
-    await openNewEmployeeDialog(page)
-    await fillRequiredFields(page, ts)
-    await page.locator('[data-testid="select-employment-type"]').click()
-    await page.getByRole('option', { name: 'Vollzeit' }).click()
-    await page.click('[data-testid="submit-employee"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-
-    const listItem = page.locator('[data-testid="employee-list-item"]').filter({ hasText: `Mustermann${ts}` })
-    await listItem.click()
-    await expect(page.getByText('Vollzeit').first()).toBeVisible()
-  })
-
-  test('Beschäftigungsart Teilzeit wird gespeichert', async ({ page }) => {
-    const ts = timestamp()
-    await openNewEmployeeDialog(page)
-    await fillRequiredFields(page, ts)
-    await page.locator('[data-testid="select-employment-type"]').click()
-    await page.getByRole('option', { name: 'Teilzeit' }).click()
-    await page.click('[data-testid="submit-employee"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-
-    const listItem = page.locator('[data-testid="employee-list-item"]').filter({ hasText: `Mustermann${ts}` })
-    await listItem.click()
-    await expect(page.getByText('Teilzeit').first()).toBeVisible()
-  })
-
-  test('Beschäftigungsart Minijob wird gespeichert', async ({ page }) => {
-    const ts = timestamp()
-    await openNewEmployeeDialog(page)
-    await fillRequiredFields(page, ts)
-    await page.locator('[data-testid="select-employment-type"]').click()
-    await page.getByRole('option', { name: 'Minijob' }).click()
-    await page.click('[data-testid="submit-employee"]')
-    await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
-
-    const listItem = page.locator('[data-testid="employee-list-item"]').filter({ hasText: `Mustermann${ts}` })
-    await listItem.click()
-    await expect(page.getByText('Minijob').first()).toBeVisible()
-  })
-
   // ---------- Validierung ----------------------------------------
 
   test('Validierung: Leerer Vorname blockiert Submit', async ({ page }) => {

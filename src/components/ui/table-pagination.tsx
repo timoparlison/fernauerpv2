@@ -34,7 +34,7 @@ export function TablePagination({
             <div className="hidden sm:flex items-center gap-1">
               <span>Zeilen:</span>
               <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
-                <SelectTrigger className="h-8 w-[70px]">
+                <SelectTrigger className="h-8 w-[70px]" data-testid="page-size-select">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

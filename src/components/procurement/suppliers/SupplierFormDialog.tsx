@@ -130,16 +130,6 @@ export function SupplierFormDialog({
             </div>
 
             <div className="col-span-1 sm:col-span-2">
-              <Label htmlFor={`${mode}-billing_address`}>Rechnungsadresse</Label>
-              <Textarea
-                id={`${mode}-billing_address`}
-                name="billing_address"
-                defaultValue={supplier?.billing_address || ''}
-                data-testid="input-billing-address"
-              />
-            </div>
-
-            <div className="col-span-1 sm:col-span-2">
               <Label htmlFor={`${mode}-delivery_address`}>Lieferadresse</Label>
               <Textarea
                 id={`${mode}-delivery_address`}
@@ -191,18 +181,6 @@ export function SupplierFormDialog({
               />
             </div>
 
-            <div>
-              <Label htmlFor={`${mode}-average_lead_time_days`}>Ø Lieferzeit (Tage)</Label>
-              <Input
-                id={`${mode}-average_lead_time_days`}
-                name="average_lead_time_days"
-                type="number"
-                step="1"
-                defaultValue={supplier?.average_lead_time_days ?? ''}
-                data-testid="input-lead-time"
-              />
-            </div>
-
             {isEdit && (
               <>
                 <div className="col-span-1 sm:col-span-2">
@@ -215,10 +193,6 @@ export function SupplierFormDialog({
                 <div>
                   <Label htmlFor={`${mode}-bic`}>BIC</Label>
                   <Input id={`${mode}-bic`} name="bic" defaultValue={supplier?.bic || ''} data-testid="input-bic" />
-                </div>
-                <div>
-                  <Label htmlFor={`${mode}-bank_name`}>Bankname</Label>
-                  <Input id={`${mode}-bank_name`} name="bank_name" defaultValue={supplier?.bank_name || ''} data-testid="input-bank-name" />
                 </div>
                 <div className="col-span-1 sm:col-span-2">
                   <Label htmlFor={`${mode}-account_holder`}>Kontoinhaber</Label>
