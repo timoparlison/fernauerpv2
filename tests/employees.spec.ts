@@ -268,7 +268,7 @@ test.describe('Mitarbeiter', () => {
     await expect(page.locator('[data-testid="absence-form"]')).toBeVisible()
 
     await page.locator('[data-testid="select-absence-type"]').click()
-    await page.getByRole('option', { name: 'Urlaub' }).click()
+    await page.getByRole('option', { name: 'Urlaub', exact: true }).click()
 
     await page.fill('[data-testid="input-absence-start"]', '2026-07-01')
     await page.fill('[data-testid="input-absence-end"]', '2026-07-14')
