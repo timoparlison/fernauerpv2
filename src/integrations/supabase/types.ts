@@ -69,6 +69,84 @@ export interface Database {
           created_at?: string
         }
       }
+      suppliers: {
+        Relationships: []
+        Row: {
+          id: string
+          supplier_number: string | null
+          name: string
+          supplier_type: 'material' | 'service' | 'both'
+          contact_person: string | null
+          email: string | null
+          phone: string | null
+          address: string | null
+          delivery_address: string | null
+          payment_terms: string | null
+          delivery_terms: string | null
+          customer_number_at_supplier: string | null
+          vat_id: string | null
+          iban: string | null
+          bic: string | null
+          account_holder: string | null
+          payment_reference: string | null
+          payment_purpose: string | null
+          notes: string | null
+          active: boolean
+          deleted_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          supplier_number?: string | null
+          name: string
+          supplier_type: 'material' | 'service' | 'both'
+          contact_person?: string | null
+          email?: string | null
+          phone?: string | null
+          address?: string | null
+          delivery_address?: string | null
+          payment_terms?: string | null
+          delivery_terms?: string | null
+          customer_number_at_supplier?: string | null
+          vat_id?: string | null
+          iban?: string | null
+          bic?: string | null
+          account_holder?: string | null
+          payment_reference?: string | null
+          payment_purpose?: string | null
+          notes?: string | null
+          active?: boolean
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          supplier_number?: string | null
+          name?: string
+          supplier_type?: 'material' | 'service' | 'both'
+          contact_person?: string | null
+          email?: string | null
+          phone?: string | null
+          address?: string | null
+          delivery_address?: string | null
+          payment_terms?: string | null
+          delivery_terms?: string | null
+          customer_number_at_supplier?: string | null
+          vat_id?: string | null
+          iban?: string | null
+          bic?: string | null
+          account_holder?: string | null
+          payment_reference?: string | null
+          payment_purpose?: string | null
+          notes?: string | null
+          active?: boolean
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       user_roles: {
         Row: {
           id: string
