@@ -17,9 +17,11 @@ dist-ssr
 .env.local
 .env.*.local
 
-# Playwright
+# Playwright / Allure
 test-results/
 playwright-report/
+allure-results/
+allure-report/
 
 # Editor directories and files
 .vscode/*

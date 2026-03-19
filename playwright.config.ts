@@ -8,10 +8,21 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
-  reporter: [['html'], ['list']],
+  reporter: process.env.CI
+    ? [
+        ['html'],
+        ['allure-playwright', { outputFolder: 'allure-results' }],
+      ]
+    : [
+        ['list'],
+        ['html', { open: 'never' }],
+        ['allure-playwright', { outputFolder: 'allure-results' }],
+      ],
   use: {
     baseURL: BASE_URL,
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: { mode: 'retain-on-failure' },
   },
   projects: [
     {
