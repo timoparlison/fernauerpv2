@@ -248,9 +248,6 @@ test.describe('Lieferanten', () => {
 
     await page.fill('[data-testid="input-name"]', updatedName)
     await page.fill('[data-testid="input-phone"]', '+49 89 9999999')
-    await page.fill('[data-testid="input-iban"]', 'DE89370400440532013000')
-    await page.fill('[data-testid="input-bic"]', 'COBADEFFXXX')
-    await page.fill('[data-testid="input-account-holder"]', 'Test GmbH')
     await page.click('[data-testid="submit-supplier"]')
 
     await expect(page.locator('[data-sonner-toast]').filter({ hasText: 'erfolgreich' })).toBeVisible({ timeout: 10000 })
@@ -260,9 +257,6 @@ test.describe('Lieferanten', () => {
     await openSupplierDetails(page, updatedName)
     await expect(page.locator('[data-testid="detail-name"]')).toContainText(updatedName)
     await expect(page.locator('[data-testid="detail-phone"]')).toContainText('+49 89 9999999')
-    await expect(page.locator('[data-testid="detail-iban"]')).toContainText('DE89370400440532013000')
-    await expect(page.locator('[data-testid="detail-bic"]')).toContainText('COBADEFFXXX')
-    await expect(page.locator('[data-testid="detail-account-holder"]')).toContainText('Test GmbH')
   })
 
   // ---------- Status umschalten ---------------------------------

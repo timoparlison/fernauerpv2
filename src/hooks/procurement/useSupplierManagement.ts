@@ -69,23 +69,32 @@ export function useSupplierManagement() {
     },
   })
 
+  const extractFormData = (formData: FormData, payTerms: string, delTerms: string) => ({
+    name: formData.get('name') as string,
+    supplier_type: formData.get('supplier_type') as Supplier['supplier_type'],
+    contact_person: (formData.get('contact_person') as string) || null,
+    email: (formData.get('email') as string) || null,
+    phone: (formData.get('phone') as string) || null,
+    address: (formData.get('address') as string) || null,
+    billing_address: (formData.get('billing_address') as string) || null,
+    delivery_address: (formData.get('delivery_address') as string) || null,
+    payment_terms: payTerms || null,
+    delivery_terms: delTerms || null,
+    customer_number_at_supplier: (formData.get('customer_number_at_supplier') as string) || null,
+    vat_id: (formData.get('vat_id') as string) || null,
+    iban: (formData.get('iban') as string) || null,
+    bic: (formData.get('bic') as string) || null,
+    bank_name: (formData.get('bank_name') as string) || null,
+    account_holder: (formData.get('account_holder') as string) || null,
+    payment_reference: (formData.get('payment_reference') as string) || null,
+    payment_purpose: (formData.get('payment_purpose') as string) || null,
+    notes: (formData.get('notes') as string) || null,
+  })
+
   const handleCreateSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const supplierData: SupplierFormData = {
-      name: formData.get('name') as string,
-      supplier_type: formData.get('supplier_type') as Supplier['supplier_type'],
-      contact_person: (formData.get('contact_person') as string) || null,
-      email: (formData.get('email') as string) || null,
-      phone: (formData.get('phone') as string) || null,
-      address: (formData.get('address') as string) || null,
-      delivery_address: (formData.get('delivery_address') as string) || null,
-      payment_terms: addPaymentTerms || null,
-      delivery_terms: addDeliveryTerms || null,
-      customer_number_at_supplier: (formData.get('customer_number_at_supplier') as string) || null,
-      vat_id: (formData.get('vat_id') as string) || null,
-      notes: (formData.get('notes') as string) || null,
-    }
+    const supplierData: SupplierFormData = extractFormData(formData, addPaymentTerms, addDeliveryTerms)
     createSupplierMutation.mutate(supplierData)
   }, [createSupplierMutation, addPaymentTerms, addDeliveryTerms])
 
@@ -94,23 +103,7 @@ export function useSupplierManagement() {
     if (!selectedSupplier) return
     const formData = new FormData(e.currentTarget)
     const updates: Partial<SupplierFormData> & { active: boolean } = {
-      name: formData.get('name') as string,
-      supplier_type: formData.get('supplier_type') as Supplier['supplier_type'],
-      contact_person: (formData.get('contact_person') as string) || null,
-      email: (formData.get('email') as string) || null,
-      phone: (formData.get('phone') as string) || null,
-      address: (formData.get('address') as string) || null,
-      delivery_address: (formData.get('delivery_address') as string) || null,
-      payment_terms: editPaymentTerms || null,
-      delivery_terms: editDeliveryTerms || null,
-      customer_number_at_supplier: (formData.get('customer_number_at_supplier') as string) || null,
-      vat_id: (formData.get('vat_id') as string) || null,
-      iban: (formData.get('iban') as string) || null,
-      bic: (formData.get('bic') as string) || null,
-      account_holder: (formData.get('account_holder') as string) || null,
-      payment_reference: (formData.get('payment_reference') as string) || null,
-      payment_purpose: (formData.get('payment_purpose') as string) || null,
-      notes: (formData.get('notes') as string) || null,
+      ...extractFormData(formData, editPaymentTerms, editDeliveryTerms),
       active: formData.get('active') === 'true',
     }
     updateSupplierMutation.mutate({ id: selectedSupplier.id, updates })
@@ -126,6 +119,7 @@ export function useSupplierManagement() {
         'E-Mail': s.email || '',
         'Telefon': s.phone || '',
         'Adresse': s.address || '',
+        'Rechnungsadresse': s.billing_address || '',
         'Lieferadresse': s.delivery_address || '',
         'Kundennummer beim Lieferanten': s.customer_number_at_supplier || '',
         'USt-IdNr.': s.vat_id || '',
@@ -133,7 +127,10 @@ export function useSupplierManagement() {
         'Lieferkonditionen': s.delivery_terms || '',
         'IBAN': s.iban || '',
         'BIC': s.bic || '',
+        'Bank': s.bank_name || '',
         'Kontoinhaber': s.account_holder || '',
+        'Referenznummer': s.payment_reference || '',
+        'Verwendungszweck': s.payment_purpose || '',
         'Notizen': s.notes || '',
         'Aktiv': s.active ? 'Ja' : 'Nein',
       }))
@@ -172,6 +169,7 @@ export function useSupplierManagement() {
             email: (row['E-Mail'] as string) || (row['Email'] as string) || null,
             phone: (row['Telefon'] as string) || null,
             address: (row['Adresse'] as string) || (row['Rechnungsadresse'] as string) || null,
+            billing_address: (row['Rechnungsadresse'] as string) || null,
             delivery_address: (row['Lieferadresse'] as string) || null,
             customer_number_at_supplier: (row['Kundennummer beim Lieferanten'] as string) || null,
             vat_id: (row['USt-IdNr.'] as string) || null,
@@ -179,7 +177,10 @@ export function useSupplierManagement() {
             delivery_terms: (row['Lieferkonditionen'] as string) || null,
             iban: (row['IBAN'] as string) || null,
             bic: (row['BIC'] as string) || null,
+            bank_name: (row['Bank'] as string) || null,
             account_holder: (row['Kontoinhaber'] as string) || null,
+            payment_reference: (row['Referenznummer'] as string) || null,
+            payment_purpose: (row['Verwendungszweck'] as string) || null,
             notes: (row['Notizen'] as string) || null,
             active: row['Aktiv'] !== 'Nein' && row['Aktiv'] !== 'nein' && row['Aktiv'] !== false,
           }))

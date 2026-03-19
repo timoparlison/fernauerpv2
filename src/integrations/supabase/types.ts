@@ -372,6 +372,78 @@ export interface Database {
           updated_at?: string
         }
       }
+      supplier_contacts: {
+        Relationships: []
+        Row: {
+          id: string
+          supplier_id: string
+          contact_person: string
+          phone: string | null
+          email: string | null
+          birthday: string | null
+          availability: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          supplier_id: string
+          contact_person: string
+          phone?: string | null
+          email?: string | null
+          birthday?: string | null
+          availability?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          supplier_id?: string
+          contact_person?: string
+          phone?: string | null
+          email?: string | null
+          birthday?: string | null
+          availability?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      supplier_documents: {
+        Relationships: []
+        Row: {
+          id: string
+          supplier_id: string
+          document_name: string
+          document_type: string
+          file_path: string
+          notes: string | null
+          deleted_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          supplier_id: string
+          document_name: string
+          document_type?: string
+          file_path: string
+          notes?: string | null
+          deleted_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          supplier_id?: string
+          document_name?: string
+          document_type?: string
+          file_path?: string
+          notes?: string | null
+          deleted_at?: string | null
+          created_at?: string
+        }
+      }
       customer_contacts: {
         Relationships: []
         Row: {

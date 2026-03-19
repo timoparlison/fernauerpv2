@@ -45,179 +45,234 @@ export function SupplierFormDialog({
           <DialogTitle className="text-lg md:text-xl" data-testid="dialog-title">{title}</DialogTitle>
           <DialogDescription className="text-xs md:text-sm">{description}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={onSubmit} className="space-y-4" data-testid="supplier-form">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form onSubmit={onSubmit} className="space-y-6" data-testid="supplier-form">
+          {/* Allgemein */}
+          <fieldset className="space-y-4">
+            <legend className="text-sm font-semibold text-muted-foreground">Allgemein</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="col-span-1 sm:col-span-2">
+                <Label htmlFor={`${mode}-name`}>Firmenname *</Label>
+                <Input
+                  id={`${mode}-name`}
+                  name="name"
+                  defaultValue={supplier?.name || ''}
+                  required
+                  data-testid="input-name"
+                />
+              </div>
 
-            <div className="col-span-1 sm:col-span-2">
-              <Label htmlFor={`${mode}-name`}>Firmenname *</Label>
-              <Input
-                id={`${mode}-name`}
-                name="name"
-                defaultValue={supplier?.name || ''}
-                required
-                data-testid="input-name"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor={`${mode}-supplier_type`}>Lieferantentyp *</Label>
-              <Select name="supplier_type" defaultValue={supplier?.supplier_type || undefined} required>
-                <SelectTrigger data-testid="select-supplier-type">
-                  <SelectValue placeholder="Typ auswählen" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="material">Material</SelectItem>
-                  <SelectItem value="service">Dienstleistung</SelectItem>
-                  <SelectItem value="both">Beides</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {isEdit && (
               <div>
-                <Label htmlFor={`${mode}-active`}>Status</Label>
-                <Select name="active" defaultValue={supplier?.active ? 'true' : 'false'}>
-                  <SelectTrigger>
-                    <SelectValue />
+                <Label htmlFor={`${mode}-supplier_type`}>Lieferantentyp *</Label>
+                <Select name="supplier_type" defaultValue={supplier?.supplier_type || undefined} required>
+                  <SelectTrigger data-testid="select-supplier-type">
+                    <SelectValue placeholder="Typ auswählen" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="true">Aktiv</SelectItem>
-                    <SelectItem value="false">Inaktiv</SelectItem>
+                    <SelectItem value="material">Material</SelectItem>
+                    <SelectItem value="service">Dienstleistung</SelectItem>
+                    <SelectItem value="both">Beides</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-            )}
 
-            <div className={isEdit ? '' : 'col-span-1'}>
-              <Label htmlFor={`${mode}-contact_person`}>Ansprechpartner</Label>
-              <Input
-                id={`${mode}-contact_person`}
-                name="contact_person"
-                defaultValue={supplier?.contact_person || ''}
-                data-testid="input-contact-person"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor={`${mode}-email`}>E-Mail</Label>
-              <Input
-                id={`${mode}-email`}
-                name="email"
-                type="email"
-                defaultValue={supplier?.email || ''}
-                data-testid="input-email"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor={`${mode}-phone`}>Telefon</Label>
-              <Input
-                id={`${mode}-phone`}
-                name="phone"
-                defaultValue={supplier?.phone || ''}
-                data-testid="input-phone"
-              />
-            </div>
-
-            <div className="col-span-1 sm:col-span-2">
-              <Label htmlFor={`${mode}-address`}>Adresse</Label>
-              <Textarea
-                id={`${mode}-address`}
-                name="address"
-                defaultValue={supplier?.address || ''}
-                data-testid="input-address"
-              />
-            </div>
-
-            <div className="col-span-1 sm:col-span-2">
-              <Label htmlFor={`${mode}-delivery_address`}>Lieferadresse</Label>
-              <Textarea
-                id={`${mode}-delivery_address`}
-                name="delivery_address"
-                defaultValue={supplier?.delivery_address || ''}
-                data-testid="input-delivery-address"
-              />
-            </div>
-
-            <div>
-              <Label>Zahlungsbedingungen</Label>
-              <Input
-                name="payment_terms"
-                value={paymentTerms}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPaymentTermsChange(e.target.value)}
-                placeholder="z.B. 30 Tage netto"
-                data-testid="input-payment-terms"
-              />
-            </div>
-
-            <div>
-              <Label>Lieferbedingungen</Label>
-              <Input
-                name="delivery_terms"
-                value={deliveryTerms}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDeliveryTermsChange(e.target.value)}
-                placeholder="z.B. DAP Werk"
-                data-testid="input-delivery-terms"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor={`${mode}-customer_number_at_supplier`}>Unsere Kundennummer</Label>
-              <Input
-                id={`${mode}-customer_number_at_supplier`}
-                name="customer_number_at_supplier"
-                defaultValue={supplier?.customer_number_at_supplier || ''}
-                data-testid="input-customer-number"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor={`${mode}-vat_id`}>USt-IdNr.</Label>
-              <Input
-                id={`${mode}-vat_id`}
-                name="vat_id"
-                defaultValue={supplier?.vat_id || ''}
-                data-testid="input-vat-id"
-              />
-            </div>
-
-            {isEdit && (
-              <>
-                <div className="col-span-1 sm:col-span-2">
-                  <h4 className="font-semibold mt-2 mb-1">Bankdaten</h4>
-                </div>
+              {isEdit && (
                 <div>
-                  <Label htmlFor={`${mode}-iban`}>IBAN</Label>
-                  <Input id={`${mode}-iban`} name="iban" defaultValue={supplier?.iban || ''} data-testid="input-iban" />
+                  <Label htmlFor={`${mode}-active`}>Status</Label>
+                  <Select name="active" defaultValue={supplier?.active ? 'true' : 'false'}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">Aktiv</SelectItem>
+                      <SelectItem value="false">Inaktiv</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div>
-                  <Label htmlFor={`${mode}-bic`}>BIC</Label>
-                  <Input id={`${mode}-bic`} name="bic" defaultValue={supplier?.bic || ''} data-testid="input-bic" />
-                </div>
-                <div className="col-span-1 sm:col-span-2">
-                  <Label htmlFor={`${mode}-account_holder`}>Kontoinhaber</Label>
-                  <Input id={`${mode}-account_holder`} name="account_holder" defaultValue={supplier?.account_holder || ''} data-testid="input-account-holder" />
-                </div>
-                <div className="col-span-1 sm:col-span-2">
-                  <Label htmlFor={`${mode}-payment_reference`}>Feste Referenznummer</Label>
-                  <Input id={`${mode}-payment_reference`} name="payment_reference" defaultValue={supplier?.payment_reference || ''} placeholder="z.B. Kundennummer für Verwendungszweck" />
-                </div>
-                <div className="col-span-1 sm:col-span-2">
-                  <Label htmlFor={`${mode}-payment_purpose`}>Verwendungszweck</Label>
-                  <Input id={`${mode}-payment_purpose`} name="payment_purpose" defaultValue={supplier?.payment_purpose || ''} />
-                </div>
-              </>
-            )}
+              )}
 
-            <div className="col-span-1 sm:col-span-2">
-              <Label htmlFor={`${mode}-notes`}>Interne Anmerkungen</Label>
-              <Textarea
-                id={`${mode}-notes`}
-                name="notes"
-                defaultValue={supplier?.notes || ''}
-                data-testid="input-notes"
-              />
+              <div className={isEdit ? '' : 'col-span-1'}>
+                <Label htmlFor={`${mode}-contact_person`}>Ansprechpartner</Label>
+                <Input
+                  id={`${mode}-contact_person`}
+                  name="contact_person"
+                  defaultValue={supplier?.contact_person || ''}
+                  data-testid="input-contact-person"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor={`${mode}-email`}>E-Mail</Label>
+                <Input
+                  id={`${mode}-email`}
+                  name="email"
+                  type="email"
+                  defaultValue={supplier?.email || ''}
+                  data-testid="input-email"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor={`${mode}-phone`}>Telefon</Label>
+                <Input
+                  id={`${mode}-phone`}
+                  name="phone"
+                  defaultValue={supplier?.phone || ''}
+                  data-testid="input-phone"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor={`${mode}-vat_id`}>USt-IdNr.</Label>
+                <Input
+                  id={`${mode}-vat_id`}
+                  name="vat_id"
+                  defaultValue={supplier?.vat_id || ''}
+                  data-testid="input-vat-id"
+                />
+              </div>
             </div>
+          </fieldset>
+
+          {/* Adressen */}
+          <fieldset className="space-y-4">
+            <legend className="text-sm font-semibold text-muted-foreground">Adressen</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor={`${mode}-address`}>Adresse</Label>
+                <Textarea
+                  id={`${mode}-address`}
+                  name="address"
+                  defaultValue={supplier?.address || ''}
+                  data-testid="input-address"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-billing_address`}>Rechnungsadresse</Label>
+                <Textarea
+                  id={`${mode}-billing_address`}
+                  name="billing_address"
+                  defaultValue={supplier?.billing_address || ''}
+                  data-testid="input-billing-address"
+                />
+              </div>
+              <div className="col-span-1 sm:col-span-2">
+                <Label htmlFor={`${mode}-delivery_address`}>Lieferadresse</Label>
+                <Textarea
+                  id={`${mode}-delivery_address`}
+                  name="delivery_address"
+                  defaultValue={supplier?.delivery_address || ''}
+                  data-testid="input-delivery-address"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Konditionen */}
+          <fieldset className="space-y-4">
+            <legend className="text-sm font-semibold text-muted-foreground">Konditionen</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label>Zahlungsbedingungen</Label>
+                <Input
+                  name="payment_terms"
+                  value={paymentTerms}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onPaymentTermsChange(e.target.value)}
+                  placeholder="z.B. 30 Tage netto"
+                  data-testid="input-payment-terms"
+                />
+              </div>
+              <div>
+                <Label>Lieferbedingungen</Label>
+                <Input
+                  name="delivery_terms"
+                  value={deliveryTerms}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onDeliveryTermsChange(e.target.value)}
+                  placeholder="z.B. DAP Werk"
+                  data-testid="input-delivery-terms"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-customer_number_at_supplier`}>Unsere Kundennummer</Label>
+                <Input
+                  id={`${mode}-customer_number_at_supplier`}
+                  name="customer_number_at_supplier"
+                  defaultValue={supplier?.customer_number_at_supplier || ''}
+                  data-testid="input-customer-number"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Bankdaten */}
+          <fieldset className="space-y-4">
+            <legend className="text-sm font-semibold text-muted-foreground">Bankdaten</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor={`${mode}-iban`}>IBAN</Label>
+                <Input
+                  id={`${mode}-iban`}
+                  name="iban"
+                  defaultValue={supplier?.iban || ''}
+                  data-testid="input-iban"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-bic`}>BIC</Label>
+                <Input
+                  id={`${mode}-bic`}
+                  name="bic"
+                  defaultValue={supplier?.bic || ''}
+                  data-testid="input-bic"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-bank_name`}>Bank</Label>
+                <Input
+                  id={`${mode}-bank_name`}
+                  name="bank_name"
+                  defaultValue={supplier?.bank_name || ''}
+                  data-testid="input-bank-name"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-account_holder`}>Kontoinhaber</Label>
+                <Input
+                  id={`${mode}-account_holder`}
+                  name="account_holder"
+                  defaultValue={supplier?.account_holder || ''}
+                  data-testid="input-account-holder"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-payment_reference`}>Feste Referenznummer</Label>
+                <Input
+                  id={`${mode}-payment_reference`}
+                  name="payment_reference"
+                  defaultValue={supplier?.payment_reference || ''}
+                  data-testid="input-payment-reference"
+                />
+              </div>
+              <div>
+                <Label htmlFor={`${mode}-payment_purpose`}>Verwendungszweck</Label>
+                <Input
+                  id={`${mode}-payment_purpose`}
+                  name="payment_purpose"
+                  defaultValue={supplier?.payment_purpose || ''}
+                  data-testid="input-payment-purpose"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Anmerkungen */}
+          <div>
+            <Label htmlFor={`${mode}-notes`}>Interne Anmerkungen</Label>
+            <Textarea
+              id={`${mode}-notes`}
+              name="notes"
+              defaultValue={supplier?.notes || ''}
+              data-testid="input-notes"
+            />
           </div>
 
           <div className="flex justify-end gap-2">
