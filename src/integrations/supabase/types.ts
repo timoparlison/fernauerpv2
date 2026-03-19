@@ -10,22 +10,133 @@ export interface Database {
   public: {
     Tables: {
       employees: {
+        Relationships: []
         Row: {
           id: string
+          employee_number: string
+          first_name: string
+          last_name: string
+          position: string | null
+          employment_type: 'fulltime' | 'parttime' | 'minijob' | null
+          birth_date: string | null
+          entry_date: string | null
+          vacation_days_per_year: number | null
+          contact_phone: string | null
+          mobile_phone: string | null
+          contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          address: string | null
+          iban: string | null
+          bic: string | null
+          account_holder: string | null
+          monthly_gross_salary: number | null
+          hourly_rate: number | null
+          status: string
+          time_tracking_enabled: boolean | null
+          flextime_enabled: boolean | null
+          bde_terminal_enabled: boolean | null
+          weekly_hours: Record<string, number> | null
+          time_account_hours: number | null
+          remaining_vacation_days: number | null
           user_id: string | null
-          name: string
+          deleted_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          employee_number: string
+          first_name: string
+          last_name: string
+          position?: string | null
+          employment_type?: 'fulltime' | 'parttime' | 'minijob' | null
+          birth_date?: string | null
+          entry_date?: string | null
+          vacation_days_per_year?: number | null
+          contact_phone?: string | null
+          mobile_phone?: string | null
+          contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          address?: string | null
+          iban?: string | null
+          bic?: string | null
+          account_holder?: string | null
+          monthly_gross_salary?: number | null
+          hourly_rate?: number | null
+          status?: string
+          time_tracking_enabled?: boolean | null
+          flextime_enabled?: boolean | null
+          bde_terminal_enabled?: boolean | null
+          weekly_hours?: Record<string, number> | null
+          user_id?: string | null
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          employee_number?: string
+          first_name?: string
+          last_name?: string
+          position?: string | null
+          employment_type?: 'fulltime' | 'parttime' | 'minijob' | null
+          birth_date?: string | null
+          entry_date?: string | null
+          vacation_days_per_year?: number | null
+          contact_phone?: string | null
+          mobile_phone?: string | null
+          contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          address?: string | null
+          iban?: string | null
+          bic?: string | null
+          account_holder?: string | null
+          monthly_gross_salary?: number | null
+          hourly_rate?: number | null
+          status?: string
+          time_tracking_enabled?: boolean | null
+          flextime_enabled?: boolean | null
+          bde_terminal_enabled?: boolean | null
+          weekly_hours?: Record<string, number> | null
+          user_id?: string | null
+          deleted_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      employee_absences: {
+        Relationships: []
+        Row: {
+          id: string
+          employee_id: string
+          absence_type: string
+          start_date: string
+          end_date: string
+          days_count: number | null
+          notes: string | null
           created_at: string
         }
         Insert: {
           id?: string
-          user_id?: string | null
-          name: string
+          employee_id: string
+          absence_type: string
+          start_date: string
+          end_date: string
+          days_count?: number | null
+          notes?: string | null
           created_at?: string
         }
         Update: {
           id?: string
-          user_id?: string | null
-          name?: string
+          employee_id?: string
+          absence_type?: string
+          start_date?: string
+          end_date?: string
+          days_count?: number | null
+          notes?: string | null
           created_at?: string
         }
       }
